@@ -72,7 +72,7 @@ HTTP Swagger document generation plugin for cloudwego/cwgo & hertz.
 | `openapi.document`  | Document  | Used to supplement the Swagger document                   |
 | `openapi.parameter` | Field     | Used to supplement the parameter                          |
 
-For more usage, please refer to [Example](./test/idl/hello.proto).
+For more usage, please refer to [Example](example/idl/hello.proto).
 
 ## Installation
 
@@ -94,4 +94,4 @@ protoc-gen-http-swagger --version
 
 ## More info
 
-See [examples](./test/idl/hello.proto)
+See [examples](example/idl/hello.proto)

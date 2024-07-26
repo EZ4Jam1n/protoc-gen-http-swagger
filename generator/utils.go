@@ -32,8 +32,6 @@
 package generator
 
 import (
-	"strings"
-
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -53,20 +51,6 @@ func appendUnique(s []string, e string) []string {
 		return append(s, e)
 	}
 	return s
-}
-
-// singular produces the singular form of a collection name.
-func singular(plural string) string {
-	if strings.HasSuffix(plural, "ves") {
-		return strings.TrimSuffix(plural, "ves") + "f"
-	}
-	if strings.HasSuffix(plural, "ies") {
-		return strings.TrimSuffix(plural, "ies") + "y"
-	}
-	if strings.HasSuffix(plural, "s") {
-		return strings.TrimSuffix(plural, "s")
-	}
-	return plural
 }
 
 func getValueKind(message protoreflect.MessageDescriptor) string {

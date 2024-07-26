@@ -19,7 +19,7 @@ message FormReq {
       title: "Hello - request";
       description: "Hello - request";
       required: [
-         "FormValue"
+         "form1"
       ];
    };
 
@@ -33,7 +33,9 @@ message FormReq {
 
    //内嵌message描述
    message InnerForm {
-      string InnerFormValue = 1;
+      string InnerFormValue = 1 [
+         (api.form) = "form3"
+      ];
    }
 
    InnerForm FormValue1 = 2 [
@@ -94,7 +96,7 @@ message HelloResp {
       title: "Hello - response";
       description: "Hello - response";
       required: [
-         "RespBody"
+         "body"
       ];
    };
 
@@ -122,8 +124,8 @@ message HelloResp {
 
 //HelloService1描述
 service HelloService1 {
-   option (api.base_domain) = "127.0.0.1:8888";
-   rpc QueryMethod(QueryReq) returns (HelloResp) {
+   option (api.base_domain) = "http://127.0.0.1:8888";
+   rpc QueryMethod1(QueryReq) returns (HelloResp) {
       option (api.get) = "/hello1";
    }
 
@@ -143,9 +145,9 @@ service HelloService1 {
 
 service HelloService2 {
 
-   rpc QueryMethod(QueryReq) returns (HelloResp) {
+   rpc QueryMethod2(QueryReq) returns (HelloResp) {
       option (api.get) = "/hello2";
-      option (api.baseurl) = "127.0.0.1:8889";
+      option (api.baseurl) = "http://127.0.0.1:8889";
       option(openapi.operation) = {
          summary: "Hello - Get";
          description: "Hello - Get";

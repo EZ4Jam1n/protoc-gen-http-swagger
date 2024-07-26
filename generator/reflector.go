@@ -46,22 +46,20 @@ const (
 	protobufAnyName   = "GoogleProtobufAny"
 )
 
-type OpenAPIv3Reflector struct {
-	conf Configuration
-
+type OpenAPIReflector struct {
+	conf            Configuration
 	requiredSchemas []string // Names of schemas which are used through references.
 }
 
-// NewOpenAPIv3Reflector creates a new reflector.
-func NewOpenAPIv3Reflector(conf Configuration) *OpenAPIv3Reflector {
-	return &OpenAPIv3Reflector{
-		conf: conf,
-
+// NewOpenAPIReflector creates a new reflector.
+func NewOpenAPIReflector(conf Configuration) *OpenAPIReflector {
+	return &OpenAPIReflector{
+		conf:            conf,
 		requiredSchemas: make([]string, 0),
 	}
 }
 
-func (r *OpenAPIv3Reflector) getMessageName(message protoreflect.MessageDescriptor) string {
+func (r *OpenAPIReflector) getMessageName(message protoreflect.MessageDescriptor) string {
 	prefix := ""
 	parent := message.Parent()
 
@@ -72,7 +70,7 @@ func (r *OpenAPIv3Reflector) getMessageName(message protoreflect.MessageDescript
 	return prefix + string(message.Name())
 }
 
-func (r *OpenAPIv3Reflector) formatMessageName(message protoreflect.MessageDescriptor) string {
+func (r *OpenAPIReflector) formatMessageName(message protoreflect.MessageDescriptor) string {
 	typeName := r.fullMessageTypeName(message)
 
 	name := r.getMessageName(message)
@@ -102,35 +100,20 @@ func (r *OpenAPIv3Reflector) formatMessageName(message protoreflect.MessageDescr
 	return name
 }
 
-func (r *OpenAPIv3Reflector) formatFieldName(field protoreflect.FieldDescriptor) string {
+func (r *OpenAPIReflector) formatFieldName(field protoreflect.FieldDescriptor) string {
 	if *r.conf.Naming == "proto" {
 		return string(field.Name())
 	}
-
 	return field.JSONName()
 }
 
 // fullMessageTypeName builds the full type name of a message.
-func (r *OpenAPIv3Reflector) fullMessageTypeName(message protoreflect.MessageDescriptor) string {
+func (r *OpenAPIReflector) fullMessageTypeName(message protoreflect.MessageDescriptor) string {
 	name := r.getMessageName(message)
 	return "." + string(message.ParentFile().Package()) + "." + name
 }
 
-func (r *OpenAPIv3Reflector) responseContentForMessage(message protoreflect.MessageDescriptor) (string, *openapi.MediaTypes) {
-	typeName := r.fullMessageTypeName(message)
-
-	if typeName == ".google.protobuf.Empty" {
-		return "200", &openapi.MediaTypes{}
-	}
-
-	if typeName == ".google.api.HttpBody" {
-		return "200", wk.NewGoogleApiHttpBodyMediaType()
-	}
-
-	return "200", wk.NewApplicationJsonMediaType(r.schemaOrReferenceForMessage(message))
-}
-
-func (r *OpenAPIv3Reflector) schemaReferenceForMessage(message protoreflect.MessageDescriptor) string {
+func (r *OpenAPIReflector) schemaReferenceForMessage(message protoreflect.MessageDescriptor) string {
 	schemaName := r.formatMessageName(message)
 	if !contains(r.requiredSchemas, schemaName) {
 		r.requiredSchemas = append(r.requiredSchemas, schemaName)
@@ -140,7 +123,7 @@ func (r *OpenAPIv3Reflector) schemaReferenceForMessage(message protoreflect.Mess
 
 // Returns a full schema for simple types, and a schema reference for complex types that reference
 // the definition in `#/components/schemas/`
-func (r *OpenAPIv3Reflector) schemaOrReferenceForMessage(message protoreflect.MessageDescriptor) *openapi.SchemaOrReference {
+func (r *OpenAPIReflector) schemaOrReferenceForMessage(message protoreflect.MessageDescriptor) *openapi.SchemaOrReference {
 	typeName := r.fullMessageTypeName(message)
 
 	switch typeName {
@@ -193,7 +176,7 @@ func (r *OpenAPIv3Reflector) schemaOrReferenceForMessage(message protoreflect.Me
 	}
 }
 
-func (r *OpenAPIv3Reflector) schemaOrReferenceForField(field protoreflect.FieldDescriptor) *openapi.SchemaOrReference {
+func (r *OpenAPIReflector) schemaOrReferenceForField(field protoreflect.FieldDescriptor) *openapi.SchemaOrReference {
 	var kindSchema *openapi.SchemaOrReference
 
 	kind := field.Kind()

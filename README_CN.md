@@ -72,7 +72,7 @@
 | `openapi.document`  | 文档      | 用于补充 swagger 文档                      |
 | `openapi.parameter` | Field   | 用于补充 parameter                       |
 
-更多的使用方法请参考 [示例](./test/idl/hello.proto)
+更多的使用方法请参考 [示例](example/idl/hello.proto)
 
 ## 安装
 
@@ -94,7 +94,7 @@ protoc-gen-http-swagger --version
 
 ## 更多信息
 
-查看 [示例](./test/idl/hello.proto)
+查看 [示例](example/idl/hello.proto)
 
 
 
