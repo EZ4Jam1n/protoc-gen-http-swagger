@@ -77,16 +77,15 @@
 ## 安装
 
 ```sh
-# 克隆官方仓库
+
+# 官方仓库安装
+
 git clone https://github.com/hertz-contrib/swagger-generate
-cd swagger-generate
-
-# 初始化并更新子模块
-git submodule update --init --recursive
-
-# 进入子模块目录并安装插件
-cd hertz/protoc-gen-http-swagger
+cd protoc-gen-http-swagger
 go install
+
+# 直接安装
+go install github.com/hertz-contrib/swagger-generate/protoc-gen-http-swagger@latest
 
 # 验证安装
 protoc-gen-http-swagger --version

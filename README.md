@@ -77,16 +77,14 @@ For more usage, please refer to [Example](example/idl/hello.proto).
 ## Installation
 
 ```sh
-# Clone the official repository
+# Install from the official repository
+
 git clone https://github.com/hertz-contrib/swagger-generate
-cd swagger-generate
-
-# Initialize and update submodules
-git submodule update --init --recursive
-
-# Navigate to the submodule directory and install the plugin
-cd hertz/protoc-gen-http-swagger
+cd protoc-gen-http-swagger
 go install
+
+# Install directly
+go install github.com/hertz-contrib/swagger-generate/protoc-gen-http-swagger@latest
 
 # Verify the installation
 protoc-gen-http-swagger --version
